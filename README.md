@@ -1,10 +1,23 @@
-![Demo](demo.png)
+## Overview
+
 
 This app is designed to help automate and schedule iMessages on Mac OS X ONLY!
 
 It is asynchronous and you can schedule multiple.
 
-Attached in the repo is the send.app distribution file along with the source. 
+Attached in the repo is the iScheduler.app file along with the source to compile it.
+
+This app works by scheduling concurrent to the OS of the form:
+
+`osascript -e "tell application "Messages" to send "{{msg}}" to buddy "{{buddy}}""`
+
+
+
+UI:
+
+![Demo](demo.png)
+
+## Compiling
 
 If you would like to compile it yourself do the following, you must have pip installed already.
 
