@@ -1,4 +1,8 @@
+![Demo](demo.png)
+
 This app is designed to help automate and schedule iMessages on Mac OS X ONLY!
+
+It is asynchronous and you can schedule multiple.
 
 Attached in the repo is the send.app distribution file along with the source. 
 
@@ -10,6 +14,9 @@ pip install virtualenv
 pip install py2app
 python setup.py py2app
 ```
+
+The app requires permission to send messages and will ask to do so on the first message.
+
 
 Troubleshooting:
 If you have multiple python versions amongst your anaconda/miniconda you may have an issue with .dylib files not being found. You want to create a symlink file `libpython3.7.dylib` that points to `libpython3.7m.dylib`. Below is a command demonstrating this:

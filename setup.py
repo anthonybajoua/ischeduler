@@ -12,6 +12,8 @@ DATA_FILES = []
 OPTIONS = {'iconfile':'icon.icns'}
 
 setup(
+	name="iScheduler",
+	version="0",
     app=APP,
     data_files=DATA_FILES,
     options={'py2app': OPTIONS},
