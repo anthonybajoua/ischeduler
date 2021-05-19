@@ -2,3 +2,5 @@
 env
 build
 .DS_Store
+*.pyc
+

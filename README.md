@@ -12,6 +12,9 @@ This app works by scheduling concurrent to the OS of the form:
 `osascript -e "tell application "Messages" to send "{{msg}}" to buddy "{{buddy}}""`
 
 
+### Requirements
+Messages app must be open
+Computer must be on (not sleeping!)
 
 UI:
 
