@@ -2,9 +2,8 @@
 import os
 import tkinter as tk
 import datetime
-import threading
-import pandas as pd
-
+from threading import Timer
+from csv import reader
 
 global textbox
 global timers
@@ -29,7 +28,7 @@ def sendCallback():
 	    textbox.insert(tk.END, f"Sending {msg} to {comp} at {laterDate}\n")
 	    textbox.config(state=tk.DISABLED)
 
-	    timer = threading.Timer(secondsLater, send, args=[msg, comp])
+	    timer = Timer(secondsLater, send, args=[msg, comp])
 	    timer.start()
 	    timers.append(timer)
 	except:
@@ -39,33 +38,35 @@ def sendCallback():
 def sendFile():
 	filename = e4.get()
 	e4.delete(0, tk.END)
-	table = None
+	try:
+		if filename[-4:] == ".csv":
+			with open(filename, 'r') as read_obj:
+				csv_reader = reader(read_obj)
 
-	if filename[-4:] == ".csv":
-		table = pd.read_csv(filename, names=['msg', 'name', 'delay'], header=0)
-	elif filename[-5:] == ".xslx":
-		table = pd.read_csv(filename, names=['msg', 'name', 'delay'], header=0)
+				next(csv_reader)
 
-	if (table is not None):
-		for i in range(len(table)):
-			msg, name, time = table.loc[i, 'msg'], table.loc[i, 'name'], table.loc[i, 'delay']
+				for row in csv_reader:
+					if len(row) == 3:
+						msg, name, time = row[0], row[1], row[2]
 
-			time = time.split(":")
+						time = time.split(":")
 
 
-			delta = datetime.timedelta(hours=int(time[0])) + datetime.timedelta(minutes=int(time[1]))
-			laterDate = (datetime.datetime.now() + delta).strftime("%m/%d/%Y, %H:%M:%S")
-			secondsLater = delta.seconds
+						delta = datetime.timedelta(hours=int(time[0])) + datetime.timedelta(minutes=int(time[1]))
+						laterDate = (datetime.datetime.now() + delta).strftime("%m/%d/%Y, %H:%M:%S")
+						secondsLater = delta.seconds
 
-			textbox.config(state="normal")
-			textbox.insert(tk.END, f"Sending {msg} to {name} at {laterDate}\n")
-			textbox.config(state=tk.DISABLED)
-			
-			print(secondsLater, msg, name)
-			timer = threading.Timer(secondsLater, send, args=[msg, name])
-			timer.start()
-			timers.append(timer)
-	
+						textbox.config(state="normal")
+						textbox.insert(tk.END, f"Sending {msg} to {name} at {laterDate}\n")
+						textbox.config(state=tk.DISABLED)
+						
+						print(secondsLater, msg, name)
+						timer = Timer(secondsLater, send, args=[msg, name])
+						timer.start()
+						timers.append(timer)
+	except:
+		print("Unexpected error")
+
 
 def send(msg, usr):
     cmd=f"osascript -e \"tell application \\\"Messages\\\" to send \\\"{msg}\\\" to buddy \\\"{usr}\\\"\""
